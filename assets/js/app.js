@@ -1,5 +1,5 @@
 var server = self.location.host;
-var socket = io.connect('http://' + server);
+var socket = io.connect('//' + server);
 var instruments;
 
 var channel = 15;
@@ -23,7 +23,7 @@ function getChannels(){
 
 function getInstruments(){
 	var params = self.location.hash.slice(1).split('&');
-	
+
 	for (var i=0; i < params.length; i++) {
 		if (params[i][0] == "c" && params[i][1] == "=" && params[i].length > 2)
 			channel = params[i].split("=")[1];
@@ -50,17 +50,17 @@ function getInstruments(){
 			var instrumentnumber = instruments[i].slice(4,7);
 			var instrumentname = instruments[i].slice(8);
 			$('#instruments').append(
-				'<li data-icon="audio"><a href="#" data-inum="' 
-				+ instrumentnumber 
+				'<li data-icon="audio"><a href="#" data-inum="'
+				+ instrumentnumber
 				+ '" data-font-id="'
 				+ fontId
 				+ '" data-inst-bank="'
 				+ instrumentBank
-				+ '">' 
-				+ instrumentname 
+				+ '">'
+				+ instrumentname
 				+ '</a></li>').enhanceWithin();
 		}
-		$("#instruments").listview("refresh");
+		$('#instruments').listview().listview('refresh');
 		$.mobile.loading( 'hide');
 	});
 }
@@ -69,12 +69,12 @@ $(document).on('vclick', '#instruments li a', function(){
 	var fontId = $(this).attr('data-font-id');
 	var instBank = $(this).attr('data-inst-bank');
 	var iname = $(this).text();
-	
-	socket.emit('changeinst', 
-		{ channel: channel, 
-		  instrumentId: ipath, 
-		  fontId: fontId, 
-		  bankId: instBank 
+
+	socket.emit('changeinst',
+		{ channel: channel,
+		  instrumentId: ipath,
+		  fontId: fontId,
+		  bankId: instBank
 		});
 
 	console.log(channel);
